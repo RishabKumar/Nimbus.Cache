@@ -1,2 +1,2 @@
-# Nimbus.Cache
-A simple LFU based Cache that supports data expiry.
+# Nimbus.Cache has been renamed to CacheCrow
+For more please visit: https://github.com/RishabKumar/CacheCrow
