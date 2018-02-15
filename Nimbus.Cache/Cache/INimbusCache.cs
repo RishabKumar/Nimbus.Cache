@@ -15,6 +15,10 @@ namespace Nimbus.Cache
     public interface INimbusCache<K, V> : IDisposable
     {
         /// <summary>
+        /// Returns instance of INimbusCache if it has been initialized
+        /// </summary>
+        INimbusCache<K, V> GetNimbusCache { get; }
+        /// <summary>
         /// Gets number of entries in Active NimbusCache
         /// </summary>
         int ActiveCount { get; }

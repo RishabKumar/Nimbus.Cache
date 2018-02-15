@@ -39,8 +39,8 @@ namespace Nimbus.Cache
         /// <param name="activeCacheExpire">Milli-seconds before each entry in Active NimbusCache is expired</param>
         /// <param name="dormantCacheExpire">Milli-seconds before each entry in Dormant(disk) NimbusCache is expired</param>
         /// <param name="cleanerSnoozeTime">Milli-seconds before Cleaner cleans Dormant NimbusCache. Note: Cleaner is called after every cleanersnoozetime milli-seconds</param>
-        /// <returns>Returns instance of NimbusCache</returns>
-        public static NimbusCache<K, V> Initialize(int size = 1000, int activeCacheExpire = 300000, int dormantCacheExpire = 500000, int cleanerSnoozeTime = 120000)
+        /// <returns>Returns instance of INimbusCache</returns>
+        public static INimbusCache<K, V> Initialize(int size = 1000, int activeCacheExpire = 300000, int dormantCacheExpire = 500000, int cleanerSnoozeTime = 120000)
         {
             if (_cache == null)
             {
@@ -49,6 +49,10 @@ namespace Nimbus.Cache
             _cache.LoadCache();
             return _cache;
         }
+        /// <summary>
+        /// Returns instance of INimbusCache if it has been initialized
+        /// </summary>
+        public INimbusCache<K, V> GetNimbusCache { get { return _cache; } }
         /// <summary>
         /// Gets number of entries in Active NimbusCache
         /// </summary>
@@ -276,7 +280,10 @@ namespace Nimbus.Cache
             _cacheDic = new ConcurrentDictionary<K, CacheData<V>>();
             _timerDic = new ConcurrentDictionary<K, Timer>();
         }
-        private void LoadCache()
+        /// <summary>
+        /// Loads entries from Dormant NimbusCache into Active NimbusCache
+        /// </summary>
+        protected void LoadCache()
         {
             var dic = ReadBinary();
             var orderderdic = dic.OrderByDescending(x => x.Value.Frequency).ToList();
